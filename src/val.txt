@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /arsys/
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+
+RewriteRule ^([0-9A-Za-z].+)$ index.php?query=$1 [NC,QSA,L]
