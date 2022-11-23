@@ -1,0 +1,84 @@
+.account-avatar {
+	display: flex;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+
+	background: #ffffff;
+	border-radius: 50%;
+}
+.account-avatar-name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 50px;
+	height: auto;
+	color: #363f4e;
+	font-size: 28px;
+}
+
+.acount-avatar-text:hover {
+	background: #ffffff;
+	color: #363f4e;
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 2px;
+}
+
+.account-profile {
+	width: 50px;
+	height: 50px;
+	background: #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+accout-profile p {
+	font-size: 1rem;
+}
+
+.account-box {
+	position: absolute;
+	padding: 5px;
+	top: 75px;
+	right: 40px;
+	width: 150px;
+	height: auto;
+	color: #363f4e;
+	z-index: 999999;
+	background: #fff;
+	border: 1px solid #eaeaea;
+	border-radius: 8px;
+	text-align: left;
+	line-height: 32px;
+	text-align: center;
+	box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.1);
+}
+
+.account-text {
+	font-size: 1.2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0;
+}
+
+.account-text:hover {
+	background: #363f4e;
+	color: #ffffff;
+	cursor: pointer;
+	scale: 1.1;
+	transition: ease all;
+}
+
+.box-hidden {
+	display: none;
+}
+
+.box-show {
+	display: block;
+}
+
+
+

@@ -18,7 +18,7 @@
         <div class="text-box">
             <h1>PHYSICAL PLANT AND SITE <br>DEVELOPMENT OFFICE <br></h1>
             <p> The Physical Plant and Site Development Office is an office of Aurora State College of Technology under the supervision of the Office of the Vice President for Planning and Finance.<br> Under PPSDO, students and faculty can use ASCOT resources such as vehicles and facilities.</p>
-            <a href="/arsys/facilities" class="hero-btn"> RESERVE NOW</a>
+            <a href="/arsys/facilities?type=reservation&categories=facilities" class="hero-btn"> RESERVE NOW</a>
         </div>
     </section>
     

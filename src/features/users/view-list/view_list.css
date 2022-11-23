@@ -1,0 +1,120 @@
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+		'Helvetica Neue', sans-serif;
+}
+.wrapper-view {
+	background: #ffffff;
+	height: 100vh;
+}
+.wrapper-view .header-view {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: 100%;
+	background: #333c4a;
+	min-height: 80px;
+	color: #ffffff;
+}
+.wrapper-view .header-view .navigation {
+	width: 95%;
+	margin: 0 auto;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	padding: 2%;
+	display: flex;
+	gap: 3%;
+	position: relative;
+}
+.wrapper-view .header-view .navigation a {
+	color: #ffffff;
+	text-decoration: none;
+}
+.wrapper-view .header-view .navigation a:hover {
+	background: rgba(0, 0, 0, 0.5);
+}
+.wrapper-view .user_profile {
+	width: 10%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	gap: 5%;
+}
+.wrapper-view .user_print {
+	width: auto;
+
+	height: 2vh;
+	padding: 10px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+}
+.wrapper-view .user_print button {
+	margin-right: 20px;
+	outline: none;
+	border: none;
+}
+.wrapper-view .main-user {
+	width: 100%;
+	margin: 0 auto;
+	max-width: 90rem;
+
+ height: -moz-calc(100vh - 80px - 50px); /* Firefox */
+ height: -webkit-calc(100vh - 80px - 50px); /* Chrome, Safari */
+ height: calc(100vh - 80px - 50px); /* IE9+ and future browsers */
+	/* max-height: 79.4vh; */
+	background: #fff;
+	border: 1px solid #eaeaea;
+	border-radius: 8px;
+	overflow: auto;
+}
+@media screen and (max-width: 640px) {
+	.wrapper-view .main-user {
+		max-width: auto;
+	}
+}
+
+.wrapper-view .footer {
+	width: 100%;
+	height: 50px;
+	background-color: #27364a;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+.wrapper-view .footer p {
+	color: #ffffff;
+	padding: 20px 0;
+}
+
+
+.table-user{
+	width: 100% !important;
+	max-width: 1440px !important;
+}
+
+/*# sourceMappingURL=view_list.css.map */

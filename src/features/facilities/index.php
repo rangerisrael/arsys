@@ -2,9 +2,6 @@
 
 
 
-<?php include('./header/index.php')?>
-
-
 
 
 
@@ -17,10 +14,14 @@
         $type = $_GET['type'];
 
 		switch ($type) {
-			case 'motor':
+			case 'reservation':
 
-       include('./motor.php');
-					
+                   include('./header/index.php');
+
+                  include('./reservation.php');
+            
+                  
+
 
 					break;
 

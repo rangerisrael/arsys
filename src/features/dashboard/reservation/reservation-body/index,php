@@ -1,0 +1,7 @@
+<div id='wrapper' class="wrapper">
+
+  <?php include __DIR__.'./../../dashboard-sidebar/index.php'; ?>
+  
+  <?php include __DIR__.'./../reservation-content/index.php';   ?>
+
+</div>

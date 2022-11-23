@@ -38,7 +38,7 @@
 			    			
 			case 'facilities':
 
-			header('Location:./features/facilities/index.php?type=motor');
+			header('Location:./features/facilities/index.php?type=reservation');
 			
 
 						break;
@@ -67,16 +67,11 @@
 
 			 break;
 					
-			case 'notfound':
-
-       include('./features/not-found/index.php');
-
-
-						break;
 								
 				default:
-							// code...
-       include('./features/not-found/index.php');
+							// code..
+							
+   		  break;
 
 		 }
 

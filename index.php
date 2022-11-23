@@ -1,3 +1,6 @@
+
+
+
 <?php
 
 //directory separator is \
@@ -18,7 +21,7 @@ function autoload($className){
 				}
 				else{
 					die('src file is missing');
-					exit();
+			
 				}
 }
 
@@ -32,65 +35,266 @@ function autoload($className){
 		$path = $_GET['query'];
 		switch ($path) {
 			case 'home':
+				
+						header('Location:./src/index.php?page=home');
 
-					header('Location:src/index.php?page=home');
-
+					//	header('Location:src/index.php?page=home');
 					break;
 					
 			case 'about':
 
-					header('Location:src/index.php?page=about');
+					header('Location:./src/index.php?page=about');
 
 
 						break;
 
 			case 'contact-us':
 
-					header('Location:src/index.php?page=contact-us');
+					header('Location:./src/index.php?page=contact-us');
 
 
 					 break;
 
 			case 'reservation':
-     	header('Location:src/index.php?page=reservation');
+
+				session_start();
+
+					 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+							    	header('Location:src/index.php?page=reservation');
 				
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+				
+ 
 
 					break;
 
 			
 			case 'facilities':
-     	header('Location:src/index.php?page=facilities');
-				
 
+						
+
+			 session_start();
+						
+				
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+							  	header('Location:./src/index.php?page=facilities');
+				
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+				
+			
+					break;
+
+
+   
+		
+			case 'auth':
+
+			 session_start();
+						
+				
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+								header('Location:./src/index.php?page=home');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+				
+			
 					break;
 				
 				
 				
 			case 'process':
-						header('Location:src/index.php?page=process');
+						header('Location:./src/index.php?page=process');
 
 							break;
 			case 'resources':
 
-						header('Location:src/index.php?page=resources');
+
+					
+			 session_start();
+						
+				
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+										header('Location:./src/index.php?page=resources');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+				
+	
+						break;
+
+
+			case 'dashboard':
+
+							 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+								header('Location:./src/features/dashboard/index.php');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+
+						break;
+
+
+			case 'dashboard-calendar':
+
+							 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+								header('Location:./src/features/dashboard/calendar/index.php');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+
+						break;
+
+	case 'dashboard-vehicles':
+
+							 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+								header('Location:./src/features/dashboard/motorpool/index.php');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+
+						break;
+
+
+				case 'dashboard-facilities':
+
+							 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+								header('Location:./src/features/dashboard/dashboard-facilities/index.php');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+
+						break;
+
+
+			
+			case 'dashboard-reservation':
+
+							 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+								header('Location:./src/features/dashboard/reservation/index.php');
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
+
+						break;
+
+
+			case 'sendForm':
+
+						header('Location:./src/sendForm.php');
+
+			case 'testForm':
+
+						header('Location:./src/features/facilities/sendForm.php');
+
+			case 'view-user':
+
+						header('Location:./src/features/users/view-list/index.php');
+
+
+						break;
+			case 'test':
+
+						header('Location:./src/features/dashboard/database-controller/update-customer.php');
 
 
 						break;
 								
 				default:
 							// code...
-							header('Location:src/features/not-found/index.php');
-								break;
+					
+								header('Location:./not-found.php');
+						
+							break;
 		 }
 	}
 	else{
 			if(empty($_GET['query'])){
-					header('Location:src/index.php');
+					header('Location:./src/index.php');
 			}
 
 	}
 			
 			
-
-
-
+	
