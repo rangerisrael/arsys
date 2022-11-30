@@ -19,7 +19,7 @@
  
  
  
- <section class="sidebar">
+ <section class="sidebar hide-on-med-and-down show-on-medium-and-up">
    <section class="sidebar-header">
      <h1>Arrsys</h1>
    </section>
@@ -72,7 +72,7 @@
        <div class="box1">
          <i class="material-icons small">settings</i>
        </div>
-       <div class="box2 sidebar-text">Settings</div>
+    <a href="/arsys/settings" class="url_link"">  <div class="box2 sidebar-text">Settings</div></a>
      </section>
    </section>
    <section class="sidebar-footer">&copy; 2022 Arsys Ascot</section>

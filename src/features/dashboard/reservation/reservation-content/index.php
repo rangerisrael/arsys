@@ -55,9 +55,9 @@ select{
 
          <label class="search-text" for="search">Search:</label><input id="search" class="search-input" type="search"
         placeholder="Search..." />
-    <div style="display:flex; flex-direction: row; justify-content: flex-end;  ">
+    <!-- <div style="display:flex; flex-direction: row; justify-content: flex-end;  ">
         <span style=' color:#363f4e; display:flex; justify-content: flex-start; gap:8px; margin:20px 5% 20px 5%;'> <i class="small material-icons">add_circle</i><h6>Add Customer</h6></span>
-    </div>
+    </div> -->
 
      
     </div>

@@ -8,6 +8,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 
@@ -100,13 +102,13 @@ async function fetchRequestUser(url) {
                  "render": function ( data, type, full, meta ) {
                      var _ids = full.id;
                          var statusData = full.status;      
-                        var statusValue = '<select name="approval" onchange="return getValue(event);">';
+                        var statusValue = '<select name="approval" data-name='+full.username+' data-request='+full.kind_request+' data-email='+full.email+' onchange="return getValue(event);">';
 
-                             statusValue += '<option selected='+full.status_id+' data-type='+full.type+' data-id='+full.status_id+' data-reserve='+full.id+' value='+full.id+'>'+statusData+'</option>';
+                             statusValue += '<option selected='+full.status_id+' data-approve='+statusData+' data-type='+full.type+' data-id='+full.status_id+' data-reserve='+full.id+' value='+full.id+'>'+statusData+'</option>';
 
                        
 
-                           statusGet.filter(value => value.name !== statusData).map((status, b) => statusValue += '<option data-type='+full.type+' data-reserve='+full.id+'  data-id='+status.id+'  value='+status.id+' >'+status.name+'</option>');
+                           statusGet.filter(value => value.name !== statusData).map((status, b) => statusValue += '<option data-type='+full.type+' data-request='+full.kind_request+' data-approve='+status.name+' data-reserve='+full.id+'  data-id='+status.id+' data-name='+full.username+' data-email='+full.email+'  value='+status.id+' >'+status.name+'</option>');
                       
                        
 
@@ -203,38 +205,177 @@ async function postRequest(url,data){
                 );
 
 
-      return res.data();
+      return res.json();
 
 }
 
+async function fetchMail(url,data){
+  const res = await fetch(url, {
+    method: "POST",
+    header: {
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    body: JSON.stringify(data)
+  }).catch(() =>
+    isErrorHandler()
+  );
 
- function getValue(e){
+
+	 return  await res;
+
+
+
+
+  }
+
+
+
+
+
+ async function getValue(e){
 
 
   var typeApproval =e.target.selectedOptions[0].getAttribute('data-type');
+  var process =e.target.selectedOptions[0].getAttribute('data-approve');
   var getId =e.target.selectedOptions[0].getAttribute('data-id');
    var reservationId =e.target.selectedOptions[0].getAttribute('data-reserve');
+   var nameGet =e.target.selectedOptions[0].getAttribute('data-name');
+    var emailGet =e.target.selectedOptions[0].getAttribute('data-email');
+     var requestKind =e.target.selectedOptions[0].getAttribute('data-request');
 
-   console.log(reservationId);
 
-console.log(getId);
+   console.log(emailGet);
+
+
+
 
  var sendData={
   "id":reservationId,
   "approval":getId
 }
+   
 
       if(typeApproval === 'facilities'){
+
+
         
-         postRequest('./reservation-controller/facilitie_approval.php',sendData);
+        var resFacilities = await postRequest('./reservation-controller/facilitie_approval.php',sendData);
+
+            if(resFacilities.status === 202){
+
+              if(process === 'approve' || process === 'decline'){
+                         
+                 var getProcess = process === 'approve' ? 'approved' : 'declined';
+
+                var getMsg = process === 'approve' ? `${emailGet} Your reservation ${requestKind} is validated and ${getProcess} by admin` : `${emailGet} Sorry your reservation ${requestKind} ${getProcess} by admin, try to check your information if something is incorrect`
+
+                	const emailData = {
+											"name": nameGet,
+											"email":emailGet,
+											"subject":`ARRSys generated message`,
+											"msg":getMsg
+										}
+
+									const resEmail = await	fetchMail('./reservation-controller/mail.php',emailData);
+
+                  console.log(resEmail);
+									
+											if(resEmail.status === 200){
+                              swal({
+                        title: `Status has been updated and email was sent to ${emailGet} `,
+                        icon: "success",
+                      });
+												
+											}
+
+											else{
+												console.log('email was not sent')
+                               swal({
+                        title: "Something went wrong",
+                        icon: "success",
+                      });
+											}
+              }
+              else{
+                   swal({
+                      title: "Status has been updated",
+                      icon: "success",
+                    });
+              }
+										
+
+                  
+            }
+            else{
+                 swal({
+                      title: "Sorry something went wrong",
+                      icon: "error",
+                    });
+            }
             
       }
       else{
           
-        postRequest('./reservation-controller/motorpool_approval.php',sendData);
+       var resMotorpool = await postRequest('./reservation-controller/motorpool_approval.php',sendData);
 
+       console.log(resMotorpool);
+        
+            if(resMotorpool.status === 202){
+                    
+                  
+              if(process === 'approve' || process === 'decline'){
+
+                  var getProcess = process === 'approve' ? 'approved' : 'declined';
+                         
+                var getMsg = process === 'approve' ? `${emailGet} Your reservation is validated and ${getProcess} by admin` : `${emailGet} Sorry your reservation ${getProcess} by admin, try to check your information if something is incorrect`
+
+                	const emailData = {
+											"name": nameGet,
+											"email":emailGet,
+											"subject":`ARRSys generated message`,
+											"msg":getMsg
+										}
+
+									const resEmail = await	fetchMail('./reservation-controller/mail.php',emailData);
+
+                  console.log(resEmail);
+									
+											if(resEmail.status === 200){
+                              swal({
+                        title: `Status has been updated and email was sent to ${emailGet} `,
+                        icon: "success",
+                      });
+												
+											}
+
+											else{
+												console.log('email was not sent')
+                               swal({
+                        title: "Something went wrong",
+                        icon: "success",
+                      });
+											}
+              }
+              else{
+                   swal({
+                      title: "Status has been updated",
+                      icon: "success",
+                    });
+              }
+										
+
+                  
+            }
+            else{
+                 swal({
+                      title: "Sorry something went wrong",
+                      icon: "error",
+                    });
+            }
+            }
+         
       
-      }
+      
 
 }
 

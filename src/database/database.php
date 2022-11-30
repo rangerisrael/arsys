@@ -5,7 +5,7 @@ class DatabaseManager{
 
 
 		//visibility encaptulation
-		private $pdo;
+		protected $pdo;
 	
 
 
@@ -289,6 +289,7 @@ return $this->pdo;
 		
 		public function inserOneQuery($tableName,$columnKeyField){
 
+
 				$keys = array_keys($columnKeyField);
 
         $field=array();
@@ -317,7 +318,10 @@ return $this->pdo;
 										
 
 						if($request === true){
-						
+
+						  if (session_status() === PHP_SESSION_NONE){session_start();}
+
+
 							  echo json_encode(array('success' => true,'status' => 200,"message" => "Transaction created check your email",'email' => $_SESSION['auth_email'],'name' => $_SESSION['auth_name'] ));
 
 						}

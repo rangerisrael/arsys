@@ -270,16 +270,51 @@ function autoload($className){
 
 			case 'view-user':
 
-						header('Location:./src/features/users/view-list/index.php');
+					 session_start();
+					
+						 if(isset($_SESSION['token']) || isset($_COOKIE['token'])){
+															
+									header('Location:./src/features/users/view-list/index.php');
 
+
+
+						 }
+						 else{
+							 	if(empty($_SESSION['token']) || isset($_COOKIE['token'])){
+							
+											header('Location:./src/features/users/index.php?page=auth');
+
+								}
+
+						 }
 
 						break;
+
+
+			
 			case 'test':
 
 						header('Location:./src/features/dashboard/database-controller/update-customer.php');
 
 
 						break;
+
+
+		case 'settings':
+
+						header('Location:./src/features/dashboard/settings/settings.php');
+
+
+			break;
+	
+			
+		case 'restore':
+
+						header('Location:./src/features/dashboard/settings/restore.php');
+
+
+			break;
+								
 								
 				default:
 							// code...

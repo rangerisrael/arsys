@@ -19,8 +19,10 @@ body {
 	z-index: 0;
 }
 .modal-hidden-box {
-	width: 800px;
-	height: 565px;
+	width: 100%;
+	max-width: 800px;
+	height: 100%;
+	max-height: 520px;
 	background-color: #31526d;
 	position: absolute;
 	top: 0;
@@ -32,20 +34,22 @@ body {
 	border-radius: 16px;
 	box-shadow: 5px 5px 10px #dcdcdc, -5px -5px 10px #e4e4e4;
 	color: #ffffff;
-	padding: 2rem;
+
 }
 
 .modal-hidden-box .box-modal {
 	width: auto;
-	height: 500px;
+	height: 100%;
+	max-height: 200px;
 	position: relative;
 	z-index: 999999;
 	background-color: #31526d;
+	padding: 1.5rem;
 }
 
 .modal-hidden-box-delete {
 	width: 565px;
-	height: 280px;
+	height: 200px;
 	background-color: #31526d;
 	position: absolute;
 	top: 0;
@@ -57,15 +61,21 @@ body {
 	border-radius: 16px;
 	box-shadow: 5px 5px 10px #dcdcdc, -5px -5px 10px #e4e4e4;
 	color: #ffffff;
-	padding: 2rem;
+	padding: 0 1.5rem;
 }
 
 .modal-hidden-box-delete .box-modal {
 	width: auto;
-	height: auto;
+	height: 140px;
 	position: relative;
+	top: 0;
 	z-index: 999999;
 	background-color: #31526d;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
 }
 .hidden-box {
 	display: none;
@@ -282,4 +292,78 @@ th {
 		   width: 0.1rem;
     -webkit-box-shadow: inset 0 0 2px #485370; 
 		background: #343D4B;
+}
+
+
+
+
+
+
+
+/* account photo */
+
+
+.img{
+	width:150px;
+	height: 150px;
+	max-width: 100%;
+	background-position: cover;
+	object-fit: cover;
+	border-radius: 50%;
+	
+		/* box-shadow: 5px 5px 10px #dcdcdc, -5px -5px 10px #e4e4e4; */
+}
+
+
+
+.image-box{
+	position: relative;
+}
+
+.img-overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, .3);
+		border-radius: 50%;
+}
+
+
+.box-photo{
+	position: relative;
+	width:150px;
+	height:150px;
+	box-shadow: 2px 2px 5px #eeeeee, -2px -2px 5px #eaeaea;
+background: #27364a;
+	border-radius: 50%;
+}
+
+.default-img{
+	color: #ffffff;
+font-size: 5rem;
+position: absolute;
+	top: 15px;
+	left: 50px;
+	transform: translateX(-50%,-50%);
+
+		/* box-shadow: 5px 5px 10px #dcdcdc, -5px -5px 10px #e4e4e4; */
+}
+
+
+/* .image-user{
+	max-width: 150px;
+	max-height: 150px;
+} */
+
+.image-hidden{
+	display: none;
+}
+
+
+.user_profile{
+width:80%;
+margin:0 auto;
+padding: 0 1rem;
 }

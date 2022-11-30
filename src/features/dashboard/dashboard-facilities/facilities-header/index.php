@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&display=swap"
     rel="stylesheet" />
-</head>
-    <link rel="stylesheet" href='./styled/facilities-dashboard.css' />
+       <link rel="stylesheet" href='./styled/facilities-dashboard.css' />
 
 </head>
+ 

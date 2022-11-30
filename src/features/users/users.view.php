@@ -84,13 +84,18 @@ input[type="number"] {
 
 .container {
 	width: 100%;
-	height: 100vh;
 	display: flex;
 	position: relative;
 	z-index: 0;
-  height:90vh;
+  height: calc(100vh - 80px);
+  overflow:hidden;
 }
 
+@media screen and (min-width:1367px){
+  .container {
+    min-height:calc(100vh - 10vh);
+}
+}
 
 
 .overlay{
@@ -170,7 +175,7 @@ height:90vh;
 
 nav{
   padding:0;
-  height:10vh;
+  height:80px;
 }
 
 .alert-box{
@@ -243,6 +248,21 @@ color:#198754;
   scale:2;
 }
 
+.department_specify{
+  width:240px;
+  height:32px;
+  margin:0.5rem 0;
+  border-radius:20px;
+  border: 1px solid #ffffff !important;
+  background:transparent !important;
+  text-align:center;
+  outline:none !important;
+  color:#ffffff;
+}
+.hidden{
+  display:none ;
+}
+
     </style>
    
 <!-- content -->
@@ -312,12 +332,20 @@ color:#198754;
                    
                     <input type='text' class='form-control input-box' id='idNumber' name="IDNumber"  placeholder="ASCOT ID Number" value='' />
 
-                    <select class="form-control input-box" id="department_id" name="department_office" />
-     
+                    <select class="form-control input-box" id="department_id" name="department_office" onchange="getSelectedDepartmentValue(this);" />
+                  
+                    <input class='form-control input-box hidden' id='specify' type="text"  name="specify_office"  placeholder="Specify department if not on the list" onkeypress="return onlyCharAllowed(event);" value=''  />
                 
-                    <input  oninput="limitLength(this);" maxlength="11" onkeypress="return disabledKey(event);" class='form-control input-box' id='mobile' type="number" name="phonenumber"  placeholder="Contact Number" value='09'/>
+                
+                    <input  oninput="limitLength(this);" maxlength="13" onkeypress="return disabledKey(event);" class='form-control input-box' id='mobile' type="number" name="phonenumber"  placeholder="Contact Number" value='09'/>
                     <span id='error-span' class='error-box f-600 t-align hide-span'>Al least eleven min length</span>
               
+                   <select class="form-control input-box" id="gender" name="gender">
+                        <option value='MALE'>MALE</option>
+                        <option value='FEMALE'>FEMALE</option>
+                   </select>
+     
+                  
                     <button type="submit"  class="submit-btn" >Submit</button>
 
 
@@ -724,17 +752,17 @@ function showPassword(){
 
 
                 isMessageAppear.textContent= responseGet.message;
+              
 
                 setTimeout(() => {
-                     window.location.href = '/arsys/home';
+                     window.location.href = '/arsys/auth';
                 }, 2000);
-                 window.location.href = '/arsys/auth';
+                
                 }
             }
                 else{
 
-                  console.log('test else')
-
+    
                   isValid.textContent =responseGet.message;
 
 
@@ -807,25 +835,35 @@ function showPassword(){
 
 
     
-     function processRegister(form){
+     async function processRegister(form){
           
         form.preventDefault();
 
 
+       
+        var office_list =form.target.elements['department_office'].value;
+        var office_specify=form.target.elements['specify_office'].value;
+
+
+   
            const formHaveValue = {
                     name:form.target.elements['fullname'].value,
                     email:form.target.elements['email'].value,
                     password:form.target.elements['password'].value,
                     idNumber:form.target.elements['IDNumber'].value,
-                    office:form.target.elements['department_office'].value,
-                   phoneNumber:form.target.elements['phonenumber'].value
+                    office:office_list !== 'others' ? office_list : null,
+                    specify_office:office_list === 'others'? office_specify : null,
+                   phoneNumber:form.target.elements['phonenumber'].value,
+                   gender:form.target.elements['gender'].value
                 
               }
+
+         
 
 
       console.log(isNotNull(formHaveValue.name) === true );
 
-      console.log(formHaveValue.password);
+
      
         var emailRegex = /^([a-zA-Z0-9.]+)([.{1}])?([a-zA-Z0-9.]+)\@(?:gmail|mailinator|yahoo|outlook|ymail)([\.])(?:com)$/;
         
@@ -837,12 +875,24 @@ function showPassword(){
               "emailErr":formErrorSpan[1],
               "passwordErr":formErrorSpan[2],
               "phoneErr":formErrorSpan[3]
+              
             }
 
             
 
         if(isNotNull(formHaveValue.name) === true && isNotNull(formHaveValue.email) === true && isNotNull(formHaveValue.password) === true && isNotNull(formHaveValue.idNumber) === true && formHaveValue.phoneNumber.length > 2){
-            if(formHaveValue.name.length < 2){
+           
+      var contact_numberValid1 = formHaveValue.phoneNumber.indexOf('09') >= 0 ;
+			var contact_numberValid2 = formHaveValue.phoneNumber.indexOf('639') >= 0;
+			var contact_numberValid3 = formHaveValue.phoneNumber.indexOf('+639') >= 0;
+
+			var validContact=(contact_numberValid1 === true && formHaveValue.phoneNumber.length === 11) || ( contact_numberValid2 === true && formHaveValue.phoneNumber.length === 12) || (contact_numberValid3 === true && formHaveValue.phoneNumber.length === 13);
+
+
+          
+          
+          
+          if(formHaveValue.name.length < 2){
               console.log('name 2 length is min');
               
               formErrorSpan[0].classList.remove('hide-span');
@@ -857,7 +907,7 @@ function showPassword(){
               formErrorSpan[2].classList.remove('hide-span');
 
 
-              console.log('password minlength 8 ');
+            
                formErrorContent.passwordErr.textContent = 'At least eight min length value.';
 
                 setTimeout(() => {
@@ -866,11 +916,11 @@ function showPassword(){
                 }, 3000);
 
             }
-            if(formHaveValue.phoneNumber.length < 11){
+            if(validContact === false){
               console.log('mobile length must be 11');
                 formErrorSpan[3].classList.remove('hide-span');
 
-               formErrorContent.phoneErr.textContent = 'At least eleven min length value.';
+               formErrorContent.phoneErr.textContent = 'Invalid number must be valid length and valid country code(+639,639,09).';
 
                 setTimeout(() => {
               formErrorSpan[3].classList.add('hide-span');
@@ -892,7 +942,12 @@ function showPassword(){
 
             else{
 
-                 fetchRequest('./register/register.controller.php',formHaveValue)   
+                if(formHaveValue.name.length > 2 && formHaveValue.password.length >7 && emailRegex.test(formHaveValue.email) === true && validContact === true){
+                 const res =  await  fetchRequest('./register/register.controller.php',formHaveValue); 
+
+                 console.log(res);
+                }
+                
       
             }
 
@@ -1002,6 +1057,38 @@ function processAuthentication(){
       EventListenerHandler(authForm,'click',processAuthentication);
 
 
+function insertAfter(referenceNode, newNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+
+function getSelectedDepartmentValue(e){
+
+  var getSelectedTag = document.getElementById('specify');
+
+
+
+  if(e.selectedOptions[0].value === 'others'){
+    
+
+      getSelectedTag.classList.remove('hidden');
+     
+        
+  
+  }
+  else{
+
+   getSelectedTag.classList.add('hidden');
+  }
+
+
+  
+  
+
+
+}
+
+
 
 
 async function fetchDepartment(url){
@@ -1025,15 +1112,16 @@ async function fetchDepartment(url){
     
 
 
-    departments.forEach((department, b) => departmentSelect += '<option value='+department.id+'>'+department.name+'</option>');
+    departments.filter((value) =>value.id !== 0).forEach((department, b) => departmentSelect += '<option value='+department.id+'>'+department.name+'</option>');
 
-    departmentSelect += '  ';
-
+    departmentSelect += '<option value="others">Specify others</option>';
 
 
 
 department_id.innerHTML = departmentSelect;
 
+
+   
 
   }   
 fetchDepartment('./register/getDeparment.controller.php');

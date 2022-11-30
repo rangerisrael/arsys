@@ -171,11 +171,10 @@ body {
 	margin: 0 auto;
 	background: #ffffff;
 	height: 92vh;
-
+	overflow: auto !important;
 }
 
 .table_wrapper{
-	
 	overflow: auto;
 }
 

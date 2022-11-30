@@ -14,14 +14,17 @@ class UserRegisterModel extends DatabaseManager{
       public $gender;
       public $roles;
 
+			public $specify_office;
+
 			
 
 
-		public function __construct($fullname,$email,$idNumber,$departmenOffice,$phoneNumber,$gender,$password,$roles,){
+		public function __construct($fullname,$email,$idNumber,$departmenOffice,$specify_office,$phoneNumber,$gender,$password,$roles,){
 			$this->fullname=$fullname;
 			$this->email=$email;
 			$this->idNumber=$idNumber;
 			$this->departmenOffice=$departmenOffice;
+			$this->specify_office=$specify_office;
 			$this->phoneNumber=$phoneNumber;
 			$this->gender=$gender;
 			$this->password=$password;
@@ -45,12 +48,13 @@ class UserRegisterModel extends DatabaseManager{
 					$this->response($success200);
 						}
 						else{
-							$stmts=$this->connect()->prepare('INSERT INTO users(name,email,photo,id_number,department_id,phone_number,gender,password,role_id,date_created) VALUES(:fullname,:email,NULL,:id_number,:office,:phone,:sex,:pass,:roles,NOW())');
+							$stmts=$this->connect()->prepare('INSERT INTO users(name,email,photo,id_number,department_id,department_specify,phone_number,gender,password,role_id,date_created) VALUES(:fullname,:email,NULL,:id_number,:office,:specify,:phone,:sex,:pass,:roles,NOW())');
 			 			$stmts->execute([
 			 				':fullname'=>$this->fullname,
 			 				':email'=>$this->email,
 							':id_number'=>$this->idNumber,
 			 				':office'=>$this->departmenOffice,
+							':specify'=>$this->specify_office,
 			      	':phone'=>$this->phoneNumber,
 			 				':sex'=>$this->gender,
               ':pass'=>$this->password,
@@ -58,7 +62,7 @@ class UserRegisterModel extends DatabaseManager{
 			 				]);
 
 
-					$success200 = array("status" => 200 ,"success" => true,"message" => "Login successfully.","route" => "login" );
+					$success200 = array("status" => 200 ,"success" => true,"message" => "User created successfully.","route" => "login" );
 
 							
 					$this->response($success200);

@@ -23,7 +23,7 @@ $customer_data = json_decode(trim(file_get_contents("php://input")));
    
 
    $customer = new Customer();
-   $customer->getInnerJoinDataOfCustomer();
+   $customer->getInnerCustomerBySelf(validate($customer_data->id));
       
 
 

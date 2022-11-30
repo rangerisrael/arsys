@@ -35,21 +35,21 @@
   <div class="total-box">
     <div class='box-first_row'>
        <div class='box-list total_reserve_list'>
-        <p id='total'>1</p>
+        <p id='total'>0</p>
         <p>Total new reservation </p>
     </div>
     <div class='box-list  total_reserve_approve'>
-        <p id='total'>3</p>
+        <p id='total'>0</p>
         <p>Total approve reservation </p>
     </div>
     </div>
    <div class='box-second_row'>
     <div class='box-list  total_reserve_declined'>
-        <p id='total'>5</p>
+        <p id='total'>0</p>
         <p>Total declined reservation</p>
     </div>
     <div class='box-list  total_reserve_pending'>
-        <p id='total'>10</p>
+        <p id='total'>0</p>
         <p>Total pending reservation</p>
     </div>
   </div>

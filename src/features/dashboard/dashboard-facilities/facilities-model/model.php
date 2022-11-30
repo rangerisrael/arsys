@@ -33,6 +33,11 @@ class Facilities extends DatabaseManager{
   }
 
 
+	  public function newRoom($fields){
+      $this->inserOneQuery('facilities_type',$fields);
+    }
+
+
 
 
 }

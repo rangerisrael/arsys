@@ -222,6 +222,16 @@ input[type="time"]::-webkit-calendar-picker-indicator,input[type="date"]::-webki
 	background-position:center bottom;
 }
 
+.dimensionSizeDocument{
+	width:auto;
+	display:block;
+	max-width:200px;
+	height:auto;
+	max-height:80px;
+	background-position:center bottom;
+}
+
+
 
 input{
 	background:transparent;
@@ -256,6 +266,12 @@ input{
 
 .div-error{
 	display:none;
+}
+#toast-container {
+    min-width: 10%;
+    bottom: -50%;
+    right: 50%;
+    transform: translateX(50%) translateY(50%);
 }
 
 </style>
@@ -356,7 +372,7 @@ input{
 					</p>
 					<p class="form-control">
 						<label for="contact_person">Contact # Person</label>
-						<input name="contact_person" id="contact_person" type="number" oninput="limitLength(this)" maxlength="12" onkeypress="return disabledKey(event);" value='09'  />
+						<input name="contact_person" id="contact_person" type="number" oninput="limitLength(this)" maxlength="13" onkeypress="return disabledKey(event);" value='09'  />
 						<span id='error-span'  class='error-text error-box hide-error'>Invalid number must be valid length and valid country code(+639,639,09)</span>
 
 					</p>
@@ -430,7 +446,7 @@ input{
 					</p>
 					<p class="form-control">
 						<label for="contact_person">Contact # Person</label>
-						<input type="number" name="contact_person_vehicle" id="contact_person" oninput="limitLength(this)" maxlength="11" onkeypress="return disabledKey(event);" value='09' />
+						<input type="number" name="contact_person_vehicle" id="contact_person" oninput="limitLength(this)" maxlength="13" onkeypress="return disabledKey(event);" value='09' />
 						<span id='error-span-motor'  class='error-text error-box hide-error'>Invalid number must be valid length and valid country code(+639,639,09)</span>
 				
 					</p>
@@ -448,13 +464,14 @@ input{
 
 					<p class="form-control">
 						<label for="time_lapse">Time</label>
-						<input id='time_lapse' name="time_lapse" type="time" value='11:08:00' >
+						<input id='time_lapse' name="time_lapse" type="time"  >
 					</p>
 
 					<p class="form-control file-scan">
 						<img id='preview_scan_file' src='' data-src='0' alt=''/>
-						<label class='scan_file' for="scan_file">Upload here the scan and signature letter </label>
-						<input name='scan_file' style='display:none;' class='hide_file' onchange="filePreviewHandler(this);" id='scan_file' type="file" accept="image/*" >
+						<label id='getNameUpload' class='scan_file' for="scan_file">Upload here the scan and signature letter </label>
+						<input name='scan_file' style='display:none;' class='hide_file' onchange="filePreviewHandler(this);" id='scan_file' type="file" accept="image/*,.doc,.docx,application/msword,.pdf" >
+						
 					</p>
 					<p class="form-button-container">
 							<button class='form-submit' type="submit">SAVE</button>
@@ -472,6 +489,14 @@ input{
 		</div>
 	</div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
 
 <!-------javascript for toggle menu------>
 <script>
@@ -666,15 +691,38 @@ if(res.length > 1){
 
 function filePreviewHandler(e){
 
+   const preview = document.getElementById('preview_scan_file');
+	 const getNameFile= document.getElementById('getNameUpload');
+
+console.log(e.files[0]);
 
 
-	   const preview = document.getElementById('preview_scan_file');
+if(e.files[0].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') >= 0){
+		 preview.src ='../../../public//assets/msword.svg';
+		 getNameFile.textContent=e.files[0].name;
+		preview.classList.add('dimensionSizeDocument');
+}
 
+if(e.files[0].type.indexOf('application/pdf') >= 0){
+		 preview.src ='../../../public//assets/pdf.png';
+		 getNameFile.textContent=e.files[0].name;
+		preview.classList.add('dimensionSizeDocument');
+}
+
+else{
+		preview.classList.remove('dimensionSizeDocument');
+	  preview.src = URL.createObjectURL(e.files[0]);
 		preview.dataset.src = '1';
-		 preview.src =URL.createObjectURL(e.files[0]);
-  // preview.src = URL.createObjectURL(e.target.file[0]);
-      preview.onload = () => URL.revokeObjectURL(preview.src);
-			preview.classList.add('dimensionSize');
+		preview.onload = () => URL.revokeObjectURL(preview.src);
+	  preview.classList.add('dimensionSize');
+}
+
+ 
+
+
+	
+
+
 
 
     
@@ -713,6 +761,37 @@ async function fetchRFormDataRequest(url,data){
   }
 
 // ?????????????????????????????????????????????????????????????????????Facilities form
+
+
+
+
+
+function toastError(message){
+
+	var msg = message.length > 0 || message !== '' ?  message :'Something went wrong, Uploaded file already exist';
+
+		M.toast({
+							html: msg,
+						classes: 'red accent-2 rounded'
+						});
+									
+}
+
+function toastSuccess(message){
+
+             M.toast({
+                html: `${message} was created successfully`,
+                classes: 'green darken-1 rounded'
+                });     
+									
+}
+
+
+
+
+
+
+
 
 function isNotNull(value) {
 		return value !== '' || value.length > 0 ? true : false;
@@ -850,7 +929,10 @@ var formVehicle = document.getElementById('facilities-form');
 									const resEmail = await	fetchMail('./faclities-controller/mail.php',sendData);
 									
 											if(resEmail.status === 200){
-													window.location.href = '/arsys/view-user';
+												toastSuccess('Reservation facilities')
+														setTimeout(() => {
+															window.location.href = '/arsys/view-user';
+														}, 2000);
 											}
 
 											else{
@@ -860,7 +942,7 @@ var formVehicle = document.getElementById('facilities-form');
 							
 								}
 								else{
-									console.log('error response');
+								toastError();
 								}
 			
 				}
@@ -904,13 +986,6 @@ var formVehicle = document.getElementById('facilities-form');
 
 
 
-
-
-
-
-
-
-
 // ????????????????????????????????????????????????????????????????????? Vehivcle forms
 
 var formVehicle = document.getElementById('form-vehicle_submit');
@@ -918,6 +993,7 @@ var formVehicle = document.getElementById('form-vehicle_submit');
  formVehicle.addEventListener('submit',async function(e){
 			e.preventDefault();
 	
+			
 
 					var erroShow =  document.getElementById('error-box');
 
@@ -971,8 +1047,7 @@ var formVehicle = document.getElementById('form-vehicle_submit');
 					var validC=(contact_numberValid1 === true && contact_person_vehicle.length === 11) || ( contact_numberValid2 === true && contact_person_vehicle.length === 12) || (contact_numberValid3 === true && contact_person_vehicle.length === 13);
 
 
-				console.log(validC);
-
+		
 
 				console.log('date file',isDateValid(date_filling) === false);
 				console.log('date remove',isDateValid(date_return) === false);
@@ -1034,6 +1109,8 @@ var formVehicle = document.getElementById('form-vehicle_submit');
 
 		var renameFile = renameUpload(file,'motorpool_scan_file_',file.name,file.type,file.lastModified);
 
+ 
+
 
 
 			const formRequest =  new FormData();
@@ -1057,10 +1134,13 @@ var formVehicle = document.getElementById('form-vehicle_submit');
 				
 				formRequest.append('scan_files',renameFile);
 
-
-			
+							
 
 					const response = await	fetchRFormDataRequest('./faclities-controller/register_reservation_vehicles.php',formRequest);
+
+
+					console.log(response.status);
+		
 
 							if(response.status === 200){
 									const sendData = {
@@ -1073,7 +1153,12 @@ var formVehicle = document.getElementById('form-vehicle_submit');
 								const resEmail = await	fetchMail('./faclities-controller/mail.php',sendData);
 								
 										if(resEmail.status === 200){
+
+											toastSuccess('Reservation motorpool');
+												
+											setTimeout(() => {
 												window.location.href = '/arsys/view-user';
+											}, 2000);
 										}
 
 										else{
@@ -1082,7 +1167,17 @@ var formVehicle = document.getElementById('form-vehicle_submit');
 									
 							}
 							else{
-								console.log('error response');
+					
+									toastMessage();
+							
+
+						
+                  
+							  // M.toast({
+                // html: 'Vehicle created successfully',
+                // classes: 'green darken-1 rounded'
+                // });
+                
 							}
 
 

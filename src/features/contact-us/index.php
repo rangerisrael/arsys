@@ -31,16 +31,21 @@
             </div>
         
             <div class="contact-col">
-                <form action="">
-                    <input type="text" placeholder="Enter Your Name" required>
-                    <input type="email" placeholder="Enter Your Email" required>
-                    <input type="text" placeholder="Enter Your Subject" required>
-                    <textarea rows="8" placeholder="Message" required></textarea>
-                    <button type="submit" class="hero2-btn"> Send Message</button>
+                <form>
+                
+                    <input type="text" placeholder="Enter Your Name" name="username">
+                    <input type="email" placeholder="Enter Your Email" name="email" >
+                    <input type="text" placeholder="Enter Your Subject" name="subject" >
+                    <textarea rows="8" placeholder="Message" name="message" ></textarea>
+                 <input type="button" class="hero2-btn" onclick="onMailContactForm();" value="Send Message"> 
                 </form>
-        </div>
+          </div>
 
     </section>
 
    
+
+
+
+
 

@@ -47,6 +47,7 @@ table .dataTable td {
           <th>ID</p>
           </th>
           <th>Name</th>
+          <th>Photo</th>
           <th>Email</th>
           <th>Gender</th>
           <th>Phone Number</th>

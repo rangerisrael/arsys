@@ -14,12 +14,20 @@ include('../database-model/customer.php');
       $customer_data = json_decode(trim(file_get_contents("php://input")));
 
 
+      // apply sanitizing form
+$sanitize_office = validate($customer_data->office);
+$sanitize_others = validate($customer_data->specify_office);
+
+
+// echo json_encode(array('office' =>$sanitize_office ,'specify' =>$sanitize_others ));
+
+
 
       $sanitize_id = validate($customer_data->id);
       $sanitize_name = validate($customer_data->name);
       $sanitize_email = validate($customer_data->email);
       // $sanitize_idNumber = validate($customer_data->idNumber);
-      $sanitize_office = validate($customer_data->office);
+      // $sanitize_office = validate($customer_data->office);
       $sanitize_phoneNumber = validate($customer_data->phoneNumber);
       $sanitize_role = validate($customer_data->roles);
       $sanitize_gender = validate($customer_data->gender);
@@ -28,7 +36,7 @@ include('../database-model/customer.php');
 
       
 
-  		  $arrField = array('name' => $sanitize_name, 'email' => $sanitize_email,'department_office' => $sanitize_office,'phone_number' => $sanitize_phoneNumber,'gender' => $sanitize_gender,'roles' => $sanitize_role,'date_updated' => $now); 
+  		  $arrField = array('name' => $sanitize_name, 'email' => $sanitize_email,'department_id' =>$sanitize_office,'department_specify ' => $sanitize_others,'phone_number' => $sanitize_phoneNumber,'gender' => $sanitize_gender,'role_id' => $sanitize_role,'date_updated' => $now); 
        // $arrFieldData = ['id','name','email','id_number','department_office','phone_number','gender','date_created'];
     
   

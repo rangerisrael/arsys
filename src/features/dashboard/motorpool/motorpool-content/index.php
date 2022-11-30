@@ -27,6 +27,86 @@ select{
 		}
 
 
+    .modal{
+      max-width: 500px !important;
+      padding: 2rem 1.5rem 1rem;
+      border-radius: 8px;
+    }
+
+
+    .responsive-img{
+      height: 200px !important;
+    }
+
+    
+    .upload-label{
+    position: relative;
+
+    width: 100%;
+
+
+    }
+
+
+    .upload-label:hover {
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Safari 3-8 */
+    transform: scale(1.1); 
+    cursor: pointer;
+    }
+
+    .overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    background:  rgba(0,0,0,0.3);;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px
+    transition: 15s ease-in;
+    }
+
+
+
+
+    .upload-label:hover  .overlay{
+    transform: scale(1);
+      cursor: pointer;
+    display: block;
+
+    }
+
+    .overlay-text{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100%;
+      color:#ffffff;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.5em;
+    }
+#toast-container {
+    min-width: 10%;
+    top: 65%;
+    right: 50%;
+    transform: translateX(50%) translateY(50%);
+}
+
+	
+input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+input[type="number"] {
+      -moz-appearance: textfield; /* Firefox */
+}
+
 
 </style>
 
@@ -56,7 +136,8 @@ select{
          <label class="search-text" for="search">Search:</label><input id="search" class="search-input" type="search"
         placeholder="Search..." />
     <div style="display:flex; flex-direction: row; justify-content: flex-end;  ">
-        <span style=' color:#363f4e; display:flex; justify-content: flex-start; gap:8px; margin:20px 5% 20px 5%;'> <i class="small material-icons">add_circle</i><h6>Add Customer</h6></span>
+        <span class="waves-effect waves-light  modal-trigger" href="#motorpool" style=' color:#363f4e; display:flex; justify-content: flex-start; gap:8px; margin:20px 5% 20px 5%;'> <i class="small material-icons" >add_circle</i><h6>Add Vehicles</h6></span>
+                <span style=' color:#363f4e; display:flex; justify-content: flex-start; gap:8px; margin:20px 5% 20px 5%;'> <i class="small material-icons">add_circle</i><h6>Reserve Vehicle</h6></span>
     </div>
 
      
@@ -72,6 +153,7 @@ select{
           <th>Plate number</th>
           <th>Fuel</th>
           <th>Gear</th>
+          <th>Capacity</th>
           <th>Borrowing type</th>
           <th>Respondent</th>
           <th>Respondent contact #</th>
@@ -112,7 +194,87 @@ select{
 
 
 
+ 
+
+  <!-- Modal Structure -->
+  <div id="motorpool" class="modal ">
+    
+    <div class="modal-header">
+      <h4 style="text-align: center;">New Vehicle</h4>
+    </div>
+
+    <div class="modal-content">
+  
+    <form id='vehicleForm' class="col s12 m12 l6 xl6">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="vehicle_name" type="text" name="vehicle_name" class="validate">
+          <label for="vehicle_name">Name</label>
+        </div>
+      </div>
+
+        <div class="row">
+        <div class="input-field col s12">
+          <input id="plate_number" type="text" name="plate_number" class="validate">
+          <label for="plate_number">Plate number</label>
+        </div>
+      </div>
+
+       <div class="row">
+        <div class="input-field col s12">
+          <input id="fuel" type="text" class="validate" name="fuel">
+          <label for="fuel">Fuel</label>
+        </div>
+      </div>
+
+      
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="gear" type="text" class="validate" name="gear">
+          <label for="gear">Gear</label>
+        </div>
+      </div>
+
+       <div class="row">
+        <div class="input-field col s12">
+          <input id="capacity" type="number" class="validate" name="capacity">
+          <label for="capacity">Capacity</label>
+        </div>
+      </div>
+     
+      <div class="row">
+          <div class="col s12 m8 offset-m2 l6 offset-l3 upload-label">
+            <label for="vehicle">  
+              <img id='vehicle-preview' src="./../../../../public/assets/upload_vehicle.png" alt="" class="circle responsive-img"> 
+             </label> 
+            <label for="vehicle">
+                 <div class="overlay">
+                    <div class="overlay-text">
+                         Upload
+                    </div>
+               </div>  
+            </label>
+                     <input name="uploadFile" style="display:none ;" id="vehicle" type="file" accept='image/*' onchange="filePreview(this);">
+
+            </div>
+   
+      </div>
+     
+     
+
+        
+    </div>
+    <div class="modal-footer">
+    <button id="formVehicle" class="waves-effect waves-green btn-flat modal-close" type="submit">Save</button>
+    </div>
+   </form>
+
+  </div>
+          
 
 
   </div>
 </section>
+
+
+

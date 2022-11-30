@@ -1,11 +1,12 @@
 
 <?php
 
+ session_start();
+
  include('../facilities-model/facilities.php');
 
 
 
-    session_start();
 
 $target_dir = "../../../../public/uploads/motorpool/";
 $target_file = $target_dir . basename($_FILES["scan_files"]["name"]);
@@ -36,20 +37,15 @@ if(isset($_FILES['scan_files'])) {
     mkdir($target_dir);
   }
 
-  $check = getimagesize($_FILES["scan_files"]["tmp_name"]);
-  if($check !== false) {
+
         $uploadOk = 1;
-  } else {
-    $uploadOk = 0;
-    $new = array('status' => 400, 'message' => 'File type is not supported..');
-      echo json_encode($new);
-    
-  }
+  
 }
 
 // Check if file already exists
 if (file_exists($target_file)) {
  $uploadOk = 0;
+ 
     $wer = array('status' => 400, 'message' => 'Sorry, file already exists.');
 
       echo json_encode($wer);
@@ -68,30 +64,42 @@ if ($_FILES["scan_files"]["size"] > 500000) {
 }
 
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" &&  $imageFileType != "pdf" &&  $imageFileType != "docx"
+&& $imageFileType != "gif"  ) {
  
     $uploadOk = 0;
 
-    $ert = array('status' => 400, 'message' => 'Sorry, only JPG, JPEG, PNG & GIF files are allowed.');
+    $ert = array('status' => 400, 'message' => 'Sorry, only  file type  are not allowed.');
 
        echo json_encode($ert);
 
 }
 
+
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
 
 
-     $err = array('status' => 400, 'message'=> 'Sorry, your file was not uploaded.');
+    //  $err = array('status' => 400, 'message'=> 'Sorry, your file was not uploaded.');
 
-       echo json_encode($err);
+    //    echo json_encode($err);
 // if everything is ok, try to upload file
-} else {
+}
+// Check if $uploadOk is set to 0 by an error
+// if ($uploadOk == 0) {
+
+
+//      $err = array('status' => 400, 'message'=> 'Sorry, your file was not uploaded.');
+
+//        echo json_encode($err);
+// // if everything is ok, try to upload file
+// } 
+else {
   if (move_uploaded_file($_FILES["scan_files"]["tmp_name"], $target_file)) {
 
+ 
     $pathRoute =  htmlspecialchars(basename($_FILES["scan_files"]["name"]));
-    $request = "File is an image - " . $check["mime"] . ".";
+    
 
 $type = validate($_POST['type_vehicle']);
 $filling = validate($_POST['date_filling_vehicle']);
@@ -104,6 +112,7 @@ $participant = validate($_POST['participant_vehicle']);
 $time = validate($_POST['time_lapse']);
 $file = validate($_FILES["scan_files"]["name"]);
 
+    
 
      $columnKeyField = array('id' => 'NULL',  'transaction_id' =>uniqid('arsys',true), 'reservation_type_id' =>2,'motorpool_type_id' =>$type, 'date_filling' => $filling,'borrowing_office' => $borrow , 'date_return' => $return  , 'assigned_person' =>  $assign ,'assigned_contact_number' => $contact  ,'reason_travel_id' =>$travel ,'number_participant' => $participant , 'target_day_use' =>  $time  ,'scan_file' => $file  ,'status_id' => '2','user_id' =>  $_SESSION['auth_id']); 
     
@@ -114,9 +123,7 @@ $file = validate($_FILES["scan_files"]["name"]);
 
 
 
-    // $data = array('status' => 200, 'message' => 'Uploaded success','filename' => $pathRoute, 'type' => $request);
-
-    //   echo json_encode($data);
+  
 
   } else {
 

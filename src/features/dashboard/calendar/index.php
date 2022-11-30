@@ -268,10 +268,12 @@ async function fetchDataToCalendar(url){
 
           for (let i = 0; i <= data.length; i++) {
                 
+            var photoUrl = data[i]?.type === 'motorpool' ?  `../../../../public/uploads/motorpooltype/${data[i]?.photo}` : `../../../../public/uploads/facilities_type/${data[i]?.photo}`;
+
                 event.push({
                   id:data[i]?.id,
                   title: `<div class="card">
-                    <img class="card-image" src="../../../../public/assets/10.png" alt="">
+                    <img class="card-image" src=${photoUrl} alt="">
 
                     <div class="overlay">
                       <div id='delete' class="overlay-close">x</div>
@@ -322,7 +324,7 @@ function createEvent(val,endDate) {
     textEscape: false 
 }
 
-    calendar.addEvent(event);
+    // calendar.addEvent(event);
 
 
 }

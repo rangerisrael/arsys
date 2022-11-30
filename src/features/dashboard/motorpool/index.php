@@ -8,10 +8,24 @@
 
 </body>
 
-
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+<script>
+      $(document).ready(function () {
+            $('.modal').modal();
+        }
+        )
+      
+
+</script>
+
+
+
 <!-- 
     <script>
       $(document).ready(function() {
@@ -110,10 +124,46 @@
     isErrorHandler()
   );
 
-   return await res.json();
+   return await res;
 
 
    }
+
+
+async function fetchRFormDataRequest(url,data){
+  const res = await fetch(url, {
+    method: "POST",
+    header: {
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    body: data
+  }).catch(() =>
+    isErrorHandler()
+  );
+
+	return await res.json();
+
+		
+
+  }
+
+
+  async function fetchFormDownload(url,data){
+  const res = await fetch(url, {
+    method: "POST",
+    header: {
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    body: data
+  }).catch(() =>
+    isErrorHandler()
+  );
+
+	return await res;
+
+		
+
+  }
 
 
    
@@ -128,7 +178,7 @@
     isErrorHandler()
   );
 
-console.log(await res.text());
+    return  await res;
 
 
    }
@@ -139,145 +189,115 @@ console.log(await res.text());
 
 	var editModal = document.getElementById('edit-modal');
   var deleteModal = document.getElementById('delete-modal');
-  
+
+
+function renameUpload(
+  renameFile,
+  newName,
+  uploadName,
+  type,
+  lastModified
+) {
+  return new File([renameFile] , `${newName}${uploadName}`, { type, lastModified });
+}
 
 
 
 
-	// 	editModal.addEventListener('mouseleave', function () {
-	// 		editModal.classList.add('hidden-box');
-	// 		editModal.classList.remove('show-box');
-	// 	});
-
-  // function deleteModalHandler(userId){
 
 
-  //  	deleteModal.classList.remove('hidden-box');
-	// 	deleteModal.classList.add('show-box');
+function isNotNull(value){
+  return value !== '' || value.length > 0 ? true :false;
+}
 
 
-  //   var isOk = document.getElementById('isOkModal');
+var vehicleForm = document.getElementById('vehicleForm');
 
-  //   const myId= {
-  //     "id":userId
-  //   }
+vehicleForm.addEventListener('submit', async function(e)  {
+    e.preventDefault();
+    var Modalelem = document.querySelector('.modal');
+    var instance = M.Modal.init(Modalelem);
+      
+    console.log(e.target.elements[0].value);
 
-  //   isOk.addEventListener('click',function(){
-  //     fetchRequest('./database-controller/delete-customer.php',myId);
-  //     location.reload();
-  //   })
-
-
- 
-  // }
-
-
-//  async function editModalHandler(userId){
-
-
-
-//     	editModal.classList.remove('hidden-box');
-// 			editModal.classList.add('show-box');
-   
-  
-
-
-
-//   var getFormId = document.querySelectorAll('#edit-form section input');
-
-//   var isSave = document.getElementById('saveBtn');
-
-//    const getUserId= {
-//       "id":userId
-//     }
-
-
-//     const res = await fetchRequest('./database-controller/get-customerbyId.php',getUserId);
-
-//   const  {name,email,gender,roles,department,phone_number} = res[0];
-
-  
-
-//           getFormId[0].value =name;
-//           getFormId[1].value =email;
-//           getFormId[2].value =gender;
-//           getFormId[3].value =phone_number;
-//           getFormId[4].value =department;
-//           getFormId[5].value =roles;
-
-
-
-  // var getByMyId = document.querySelectorAll('#edit-form section input');
-
-
-  //   isSave.addEventListener('click',function(){
-
-  //      var arrInput = Array.from(getByMyId);
-
-
-  //       var err='';
-
-  //        arrInput.map((forms) => {
-
-  //          var value = forms.value.length > 0;
-            
-
-  //           if(value === true){
-  //               err = '';
-  //           }
-  //           else{
-  //               err= 'Field is required';
-  //           }
-
-  //       })
-
-  //       console.log(err);
-
-  //       if(err === ''){
-
-  //           const convertDatatoJson ={
-  //           "id":userId,
-  //           "name":getFormId[0].value,
-  //           "email":getFormId[1].value,
-  //           "gender":getFormId[2].value,
-  //           "phoneNumber":getFormId[3].value,
-  //           "office":getFormId[4].value,
-  //           "roles":getFormId[5].value,
-  //         };
-
-          
-
-  //          fetchRequestUpdate('./database-controller/update-customer.php',convertDatatoJson);
-  //          location.reload();
-  //       }
-  //       else{
-  //         console.log('something went wrong');
-  //       }
-
+    
+    
+  if(isNotNull(e.target.elements[0].value) && isNotNull(e.target.elements[1].value) && isNotNull(e.target.elements[2].value)  && isNotNull(e.target.elements[3].value)  && isNotNull(e.target.elements[4].value) && isNotNull(e.target.elements[5].value)){
+      instance.open();
      
-  //   })
+          var file = e.target.elements[5].files[0];
+
+   
+            var renameText = 'vehicle'.replaceAll('-','');
+
+		      var renameFile = renameUpload(file,renameText,file.name,file.type,file.lastModified);
 
 
+
+          var formData =  new FormData();
+          formData.append('name',e.target.elements[0].value);
+          formData.append('plate_number',e.target.elements[1].value);
+          formData.append('fuel',e.target.elements[2].value);
+          formData.append('gear',e.target.elements[3].value);
+          formData.append('capacity',e.target.elements[4].value);
+          formData.append('vehicle_photo',renameFile);
+
+
+          var respData =  await fetchRFormDataRequest('./motorpool-controller/addMotorpoolType.php',formData);
+
+            if(respData.status === 200){
+              M.toast({
+                html: 'Vehicle created successfully',
+                classes: 'green darken-1 rounded'
+                });
+                
+                setTimeout(() => {
+                  location.reload();
+                }, 2000);
+
+            }
+            else{
+                      M.toast({
+                html: 'Something went wrong, file already exist',
+                classes: 'red accent-2 rounded'
+                });
+            }
+
+
+
+
+        // setTimeout(() => {
+        //    location.reload();
+        // }, 3000);
+
+  }
+  else{
+      instance.open();
+    
+          M.toast({
+          html: 'All fields required',
+          classes: 'red accent-2 rounded'
+          });
+
+  }
+
+      
+})
   
 
- 
-
-  // }
 
 
+function filePreview(e){
 
-// 	deleteModal.addEventListener('mouseleave', function () {
-// 			deleteModal.classList.add('hidden-box');
-// 			deleteModal.classList.remove('show-box');
-//       window.reload();
-// 	});
+  var vehiclePreview = document.getElementById('vehicle-preview');
+
+  	 vehiclePreview.src =URL.createObjectURL(e.files[0]);
+  // preview.src = URL.createObjectURL(e.target.file[0]);
+      vehiclePreview.onload = () => URL.revokeObjectURL(vehiclePreview.src);
+
+}
 
 
-
-//  function handlerisCancel(){
-//  	    deleteModal.classList.add('hidden-box');
-// 			deleteModal.classList.remove('show-box');
-//  }
  
 
 function checkImageExists(imageUrl, callBack) {
@@ -291,9 +311,6 @@ function checkImageExists(imageUrl, callBack) {
   imageData.src = imageUrl;
   }
   
-
-
-
 
 
 
@@ -329,10 +346,21 @@ console.log(responseGet)
         },
       "columns": [
               { "data": "name" },
-              { "data": "photo" },
+                {
+                 sortable: false,
+                 "render": function ( data, type, full, meta ) {
+                     var _ids = full.id;
+                       var srcFile = `./../../../../public/uploads/motorpooltype/${full.photo}`;
+
+                 
+
+                     return '<img src='+srcFile+' width="80" height="80"/>';
+                 }
+             },
               { "data": "plateNumber" },
               { "data": "fuel" },
               { "data": "gear" },
+              { "data": "capacity" },
               { "data": "borrow_type" },
               { "data": "respondent" },
               { "data": "respondentNumber" },
@@ -343,8 +371,20 @@ console.log(responseGet)
                  sortable: false,
                  "render": function ( data, type, full, meta ) {
                      var _ids = full.id;
-                     var src = `../../../../public/uploads/motorpool/${full.request_photo}`;
-                     return '<img src='+src+' width="80" height="80"/>';
+                var src = `../../../../public/uploads/motorpool/${full.request_photo}`;
+                    var fileType = full.request_photo;
+
+                    if(fileType.indexOf('.pdf') >= 0){
+                      return '<a href="./motorpool-controller/downloadFileFromDirectory.php?link='+fileType+'"><img src="../../../../public/assets/pdf.png"  style="cursor:pointer;" id="getFile" data-name='+fileType+' title="Download"  width="80" height="80"/></a>';
+                    }
+                    if(fileType.indexOf('.docx') >= 0){
+                     return '<a href="./motorpool-controller/downloadFileFromDirectory.php?link='+fileType+'"><img src="../../../../public/assets/msword.svg"  style="cursor:pointer;" id="getFile" data-name='+fileType+' title="Download"  width="80" height="80"/></a>';
+
+                    }
+                    else{
+                       return '<img src='+src+' width="80" height="80"/>';
+                    }
+                    
                  }
              },
               { "data": "startDate" },

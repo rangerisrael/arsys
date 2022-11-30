@@ -9,9 +9,21 @@
 </body>
 
 
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+<script>
+      $(document).ready(function () {
+            $('.modal').modal();
+        }
+        )
+</script>
+<!-- 
 <!-- 
     <script>
       $(document).ready(function() {
@@ -134,151 +146,142 @@ console.log(await res.text());
    }
 
 
-   
 
 
-	// var editModal = document.getElementById('edit-modal');
-  // var deleteModal = document.getElementById('delete-modal');
+function renameUpload(
+  renameFile,
+  newName,
+  uploadName,
+  type,
+  lastModified
+) {
+  return new File([renameFile] , `${newName}${uploadName}`, { type, lastModified });
+}
+
+
+
+async function fetchRFormDataRequest(url,data){
+  const res = await fetch(url, {
+    method: "POST",
+    header: {
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    body: data
+  }).catch(() =>
+    isErrorHandler()
+  );
+
+	return await res.json();
+
+		
+
+  }
+
+
+
+
+
+
+
+function isNotNull(value){
+  return value !== '' || value.length > 0 ? true :false;
+}
+
+
+var room = document.getElementById('roomForm');
+
+room.addEventListener('submit', async function(e)  {
+    e.preventDefault();
+    var Modalelem = document.querySelector('.modal');
+    var instance = M.Modal.init(Modalelem);
+      
   
 
-
-
-
-	// 	editModal.addEventListener('mouseleave', function () {
-	// 		editModal.classList.add('hidden-box');
-	// 		editModal.classList.remove('show-box');
-	// 	});
-
-  // function deleteModalHandler(userId){
-
-
-  //  	deleteModal.classList.remove('hidden-box');
-	// 	deleteModal.classList.add('show-box');
-
-
-  //   var isOk = document.getElementById('isOkModal');
-
-  //   const myId= {
-  //     "id":userId
-  //   }
-
-  //   isOk.addEventListener('click',function(){
-  //     fetchRequest('./database-controller/delete-customer.php',myId);
-  //     location.reload();
-  //   })
-
-
- 
-  // }
-
-
-//  async function editModalHandler(userId){
-
-
-
-//     	editModal.classList.remove('hidden-box');
-// 			editModal.classList.add('show-box');
-   
-  
-
-
-
-//   var getFormId = document.querySelectorAll('#edit-form section input');
-
-//   var isSave = document.getElementById('saveBtn');
-
-//    const getUserId= {
-//       "id":userId
-//     }
-
-
-//     const res = await fetchRequest('./database-controller/get-customerbyId.php',getUserId);
-
-//   const  {name,email,gender,roles,department,phone_number} = res[0];
-
-  
-
-//           getFormId[0].value =name;
-//           getFormId[1].value =email;
-//           getFormId[2].value =gender;
-//           getFormId[3].value =phone_number;
-//           getFormId[4].value =department;
-//           getFormId[5].value =roles;
-
-
-
-//   var getByMyId = document.querySelectorAll('#edit-form section input');
-
-
-//     isSave.addEventListener('click',function(){
-
-//        var arrInput = Array.from(getByMyId);
-
-
-//         var err='';
-
-//          arrInput.map((forms) => {
-
-//            var value = forms.value.length > 0;
-            
-
-//             if(value === true){
-//                 err = '';
-//             }
-//             else{
-//                 err= 'Field is required';
-//             }
-
-//         })
-
-//         console.log(err);
-
-//         if(err === ''){
-
-//             const convertDatatoJson ={
-//             "id":userId,
-//             "name":getFormId[0].value,
-//             "email":getFormId[1].value,
-//             "gender":getFormId[2].value,
-//             "phoneNumber":getFormId[3].value,
-//             "office":getFormId[4].value,
-//             "roles":getFormId[5].value,
-//           };
-
-          
-
-//            fetchRequestUpdate('./database-controller/update-customer.php',convertDatatoJson);
-//            location.reload();
-//         }
-//         else{
-//           console.log('something went wrong');
-//         }
-
-     
-//     })
-
-
-  
-
- 
-
-//   }
-
-
-
-// 	deleteModal.addEventListener('mouseleave', function () {
-// 			deleteModal.classList.add('hidden-box');
-// 			deleteModal.classList.remove('show-box');
-//       window.reload();
-// 	});
-
-
-
-//  function handlerisCancel(){
-//  	    deleteModal.classList.add('hidden-box');
-// 			deleteModal.classList.remove('show-box');
-//  }
     
+    
+  if(isNotNull(e.target.elements[0].value) && isNotNull(e.target.elements[1].value) && isNotNull(e.target.elements[2].value)  && isNotNull(e.target.elements[3].value) ){
+      instance.open();
+     
+          var file = e.target.elements[3].files[0];
+
+   
+            var renameText = 'room'.replaceAll('-','');
+
+		      var renameFile = renameUpload(file,renameText,file.name,file.type,file.lastModified);
+
+
+
+          var formData =  new FormData();
+          formData.append('name',e.target.elements[0].value);
+          formData.append('capacity',e.target.elements[1].value);
+          formData.append('location',e.target.elements[2].value);
+          formData.append('facilities_photo',renameFile);
+
+
+          var respData =  await fetchRFormDataRequest('./facilities-controller/addFacilitiesType.php',formData);
+
+            if(respData.status === 200){
+              M.toast({
+                html: 'Room created successfully',
+                classes: 'green darken-1 rounded'
+                });
+                
+                setTimeout(() => {
+                  location.reload();
+                }, 2000);
+
+            }
+            else{
+                      M.toast({
+                html: 'Something went wrong, file already exist',
+                classes: 'red accent-2 rounded'
+                });
+            }
+
+  }
+  else{
+      instance.open();
+    
+          M.toast({
+          html: 'All fields required',
+          classes: 'red accent-2 rounded'
+          });
+
+  }
+
+      
+})
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function filePreview(e){
+
+  var vehiclePreview = document.getElementById('facilities-preview');
+
+  	 vehiclePreview.src =URL.createObjectURL(e.files[0]);
+  // preview.src = URL.createObjectURL(e.target.file[0]);
+      vehiclePreview.onload = () => URL.revokeObjectURL(vehiclePreview.src);
+
+}
+
 
 
 
@@ -315,7 +318,20 @@ console.log(responseGet)
         },
       "columns": [
               { "data": "name" },
-              { "data": "photo" },
+               {
+                 sortable: false,
+                 "render": function ( data, type, full, meta ) {
+                     var _ids = full.id;
+
+                   
+
+                       var srcFile = `../../../../public/uploads/facilities_type/${full.photo}`;
+
+                
+
+                     return '<img src='+srcFile+' width="80" height="80"/>';
+                 }
+             },
               { "data": "capacity" },
               { "data": "location" },
               { "data": "borrow_type" },
